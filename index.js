@@ -24,10 +24,9 @@ const baseUrl=process.env.BASE_URL;
 
 app.use(cors({
 
-  origin:("https://chat-app-zeta-lovat.vercel.app/"),
+  origin:["https://chat-app-zeta-lovat.vercel.app"],
   credentials:true,
-  
-
+  methods:["GET", "POST"]
 }));
 
 app.use('/uploads', express.static('uploads'));
