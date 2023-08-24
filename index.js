@@ -23,8 +23,11 @@ dotenv.config()
 const baseUrl=process.env.BASE_URL;
 
 app.use(cors({
+
+  origin:("https://chat-app-zeta-lovat.vercel.app/"),
   credentials:true,
-  origin:baseUrl
+  
+
 }));
 
 app.use('/uploads', express.static('uploads'));
@@ -42,7 +45,7 @@ const server=app.listen(port);
 
 
 
-app.get('/test', (req,res) => {
+app.get('/', (req,res) => {
     res.json('test ok');
   });
 
