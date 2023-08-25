@@ -291,7 +291,7 @@ if(token){
 
       const mes=JSON.parse(msg).message;
 
-      // console.log(mes)
+      console.log(mes)
 
       const {reciepient,text,file}=mes;
 
