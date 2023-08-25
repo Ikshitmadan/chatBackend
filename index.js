@@ -22,6 +22,8 @@ dotenv.config()
 
 const baseUrl=process.env.BASE_URL;
 
+console.log(baseUrl);
+
 app.use(cors({
 
   origin:["https://chat-app-zeta-lovat.vercel.app"],
