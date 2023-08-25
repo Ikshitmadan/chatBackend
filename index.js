@@ -30,7 +30,7 @@ app.use(cors({
   methods:["GET", "POST"]
 }));
 
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const url=process.env.MONGO_URL;
 console.log(url);
