@@ -25,7 +25,7 @@ const baseUrl=process.env.BASE_URL;
 console.log(baseUrl);
 
 app.use(cors({
-  origin:["https://chat-appfrontend-ji9b5agwh-ikshitmadan.vercel.app","https://chat-appfrontend-1fsz-jltjpepid-ikshitmadan.vercel.app"],
+  origin:["https://chat-appfrontend-ji9b5agwh-ikshitmadan.vercel.app","https://chat-appfrontend-1fsz-jltjpepid-ikshitmadan.vercel.app","https://chat-appfrontend.vercel.app"],
   credentials:true,
   methods:["GET", "POST"]
 }));
