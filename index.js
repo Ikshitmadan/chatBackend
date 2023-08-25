@@ -31,7 +31,7 @@ app.use(cors({
   methods:["GET", "POST"]
 }));
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join('https://chatbackend-production-eef8.up.railway.app', 'uploads')));
 
 const url=process.env.MONGO_URL;
 console.log(url);
