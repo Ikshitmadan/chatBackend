@@ -26,7 +26,7 @@ console.log(baseUrl);
 
 app.use(cors({
 
-  origin:["http://localhost:5173"],
+  origin:["http://chat-appfrontend-ji9b5agwh-ikshitmadan.vercel.app"],
   credentials:true,
   methods:["GET", "POST"]
 }));
