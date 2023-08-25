@@ -26,7 +26,7 @@ console.log(baseUrl);
 
 app.use(cors({
 
-  origin:["https://chat-app-zeta-lovat.vercel.app"],
+  origin:["http://localhost:5173"],
   credentials:true,
   methods:["GET", "POST"]
 }));
