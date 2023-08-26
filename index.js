@@ -275,7 +275,7 @@ if(token){
     }
 
 
-    const {userId,username}=userData;
+    const {userId,username,img}=userData;
 
     connection.username=username;
     connection.userId=userId;
