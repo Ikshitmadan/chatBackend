@@ -335,12 +335,10 @@ if(token){
   })
 
 
-
   const y=[...wss.clients].forEach(client => {
     client.send(JSON.stringify({
-      online: [...wss.clients].map(c => ({userId:c.userId,username:c.username})),
+      online: [...wss.clients].map(c => ({userId:c.userId,username:c.username,img:c.img})),
     }))});
-
 
 
 }
