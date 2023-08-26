@@ -235,6 +235,8 @@ app.post('/login', async (req,res) => {
   connection.on('close',()=>{
 
     console.log(`disconnected user is ${connection.username}.`);
+
+
     const y=[...wss.clients].forEach(client => {
       client.send(JSON.stringify({
         online: [...wss.clients].map(c => ({userId:c.userId,username:c.username})),
@@ -277,6 +279,8 @@ if(token){
 
     connection.username=username;
     connection.userId=userId;
+    connection.img=img;
+
 
 
 
