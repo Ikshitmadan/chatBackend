@@ -8,6 +8,7 @@ const cookie_parser=require('cookie-parser');
 const Message=require('./models/messageModel');
 const ws=require('ws');
 const path = require('path');
+const ChatGroup = require('./models/chatModel');
 
 const fs=require('fs');
 
