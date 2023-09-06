@@ -26,7 +26,7 @@ const baseUrl=process.env.BASE_URL;
 console.log(baseUrl);
 
 app.use(cors({
-  origin:["https://chat-appfrontend-ji9b5agwh-ikshitmadan.vercel.app","https://chat-appfrontend-1fsz-jltjpepid-ikshitmadan.vercel.app","https://chat-appfrontend.vercel.app"],
+  origin:["https://chat-appfrontend-ji9b5agwh-ikshitmadan.vercel.app","https://chat-appfrontend-1fsz-jltjpepid-ikshitmadan.vercel.app","https://chat-appfrontend.vercel.app","http://localhost:5173","chat-appfrontend-dl46zxxsn-ikshitmadan.vercel.app"],
   credentials:true,
   methods:["GET", "POST"]
 }));
@@ -177,7 +177,7 @@ app.post('/login', async (req,res) => {
     const foundUser = await User.findOne({username});
     if (foundUser) {
       if (foundUser.password === password) {
-        jwt.sign({userId:foundUser._id,username,}, process.env.JWT_SECRET, {}, (err, token) => {
+        jwt.sign({userId:foundUser._id,username,img:foundUser.img}, process.env.JWT_SECRET, {}, (err, token) => {
           res.cookie('token', token, {sameSite:'none', secure:true,credentials: 'include'}).json({
             id: foundUser._id,
           });
