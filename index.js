@@ -202,6 +202,129 @@ app.post('/login', async (req,res) => {
   });
 
 
+  app.get('/users',async(req,res)=>{
+
+    const users=await User.find({});
+
+    res.json(users);
+  })
+  app.get('/group',async(req,res)=>{
+
+    const group= await ChatGroup.find({});
+console.log(group);
+    res.json(group);
+
+  })
+ 
+
+  app.post('/group/create',validate,async(req,res)=>{
+    const {name}=req.body;
+    const owner=req.userId;
+const members=[];
+members.push(owner);
+ const group=await ChatGroup.create({
+      name,
+      members,
+      owner,
+      messages:[]
+    });
+
+    console.log(group);
+
+    res.json(group);
+
+  });
+
+
+app.post('/group/add',validate,async(req,res)=>{
+
+  const {chatId,userid}=req.body;
+const group= await ChatGroup.findOne({_id:chatId});
+console.log(group);
+if(!group){
+
+return res.status(401).json('no group exist');
+}
+else if(group['owner']!=req.userId){
+
+  console.log(group.owner+" "+req.userId);
+return res.status(401).json('you are not admin');
+
+}
+else if (group.members.includes(userid)) {
+  return res.status(400).json({ message: 'Member is already in the group' });
+}
+
+group.members.push(userid);
+
+    // Save the updated chat group document
+    await group.save();
+
+  const grp= await group.populate('members');
+    res.json(grp);
+});
+
+
+
+app.post('/group/message',validate,async(req,res)=>{
+
+  const {message,chatId,name}=req.body;
+
+  const groupChat=await ChatGroup.findOne({_id:chatId});
+
+
+  if(!groupChat){
+
+    return res.status(400).send('no chatId exist')
+  }
+
+
+  if(groupChat.members.includes(req.userId)==-1){
+console.log(req.userId);
+
+    return res.status(401).send(' members does not exist in this group')
+
+  }
+  const newMessage = {
+    text:message,
+    sender:req.userId,
+    name:name
+  };
+
+  // Push the new message to the group's messages array
+  groupChat.messages.push(newMessage);
+
+  // Save the updated chat group document
+  await groupChat.save();
+
+
+res.json(groupChat);
+
+})
+
+app.get('/groups/:gid',async(req,res)=>{
+
+  try{
+const id=req.params.gid;
+
+console.log(id);
+
+     const group= await ChatGroup.findById(id);
+    
+     res.json(group);
+
+  }
+  catch(err){
+
+    res.json({message:err.message});
+
+  }
+
+
+
+})
+
+
  app.get('/profile',async (req,res) => {
 
     try {
@@ -297,6 +420,132 @@ if(token){
       const mes=JSON.parse(msg).message;
 
       console.log(mes)
+
+      if(mes.type=='create'){
+
+        const {name}=mes;
+         await  axios.post('/group/create',{name})
+        
+        return;
+        }
+        
+        
+        
+        
+        
+        
+              if(mes && mes.type=='group'){
+        
+                try{
+        
+                  
+                const {text,roomId,members}=mes;
+                console.log(text);
+                
+        
+            console.log(members);
+        
+            [...wss.clients].filter((client)=>members.includes(client.userId)!=-1).forEach(client=>client.send(JSON.stringify({
+              text:text,
+              sender:connection.userId,
+              name:connection.username,
+              type:'group',
+              group:roomId
+            })))
+            
+        
+                     
+                
+                return;
+        
+                }
+        
+                catch(err){
+        
+        
+                  console.log(err);
+                }
+        
+        
+              }
+        
+        
+        
+              if(mes.type=='join'){
+        
+                const {sender,roomId}=mes;
+        
+        
+                try{
+        
+             const {data}= await  axios.post('/group/add',{chatId:roomId,userid:sender});
+        
+        
+             [...wss.clients].filter((client)=>client.userId===sender).forEach(client=>client.send(JSON.stringify({
+             type:'join',
+            })))
+        
+        
+                }
+                catch(err){
+        
+                }
+        
+                  
+        //         if(rooms.hasOwnProperty(roomId)){
+        
+        // rooms[roomId].push(connection)
+        
+        //         console.log("this is "+JSON.stringify(rooms));
+        //         console.log(JSON.stringify(connection.username));
+        
+        //         rooms[roomId].forEach((client)=>{
+        
+        //           client.send(JSON.stringify({
+        //             joined:connection.username,
+        //             type:'join'
+        
+        //           }))
+        //         })
+        //         return;
+        //       }
+        
+        
+        
+            }
+        
+            if(mes.type=='typing'){
+        
+        const {reciever}=mes;
+        
+        [...wss.clients].filter((client)=>client.userId===reciever).forEach(client=>client.send(JSON.stringify({
+          sender:connection.username,
+          type:"typing"
+        })))
+        
+        
+        return;
+            }
+        
+            if(mes.type=='stop'){
+        
+              const {reciever}=mes;
+        
+              [...wss.clients].filter((client)=>client.userId===reciever).forEach(client=>client.send(JSON.stringify({
+                sender:connection.username,
+                type:"stop"
+              })))
+              
+        
+        
+              return;
+            }
+
+
+
+
+
+
 
       const {reciepient,text,file}=mes;
 
