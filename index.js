@@ -27,7 +27,7 @@ const baseUrl=process.env.BASE_URL;
 console.log(baseUrl);
 
 app.use(cors({
-  origin:["https://chat-appfrontend-ji9b5agwh-ikshitmadan.vercel.app","https://chat-appfrontend-1fsz-jltjpepid-ikshitmadan.vercel.app","https://chat-appfrontend.vercel.app","http://localhost:5173","https://chat-appfrontend-1fsz.vercel.app"],
+  origin:["https://chat-appfrontend-ji9b5agwh-ikshitmadan.vercel.app","https://chat-appfrontend-1fsz-jltjpepid-ikshitmadan.vercel.app","https://chat-appfrontend.vercel.app","http://localhost:5173","https://chat-appfrontend-1fsz.vercel.app","https://main--thriving-sunburst-edad09.netlify.app"],
   credentials:true,
   methods:["GET", "POST","DELETE","PUT","PATCH"]
 }));
